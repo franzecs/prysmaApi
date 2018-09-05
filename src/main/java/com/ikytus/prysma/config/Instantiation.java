@@ -1,12 +1,17 @@
 package com.ikytus.prysma.config;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.ikytus.prysma.domain.Endereco;
+import com.ikytus.prysma.domain.User;
+import com.ikytus.prysma.dto.EmpresaDTO;
 import com.ikytus.prysma.repository.PostRepository;
 import com.ikytus.prysma.repository.UserRepository;
 
@@ -30,28 +35,11 @@ public class Instantiation implements CommandLineRunner {
 		userRepository.deleteAll();
 		postRepository.deleteAll();
 		
-		/*User franze = new User(null, "Francisco José", "franze@gmail.com");
-		User paulo = new User(null, "Paulo André", "paulo@gmail.com");
-		User bob = new User(null, "Bob dim", "bob@gmail.com");
+		Endereco ender = new Endereco("61648-050", "Av. de Contorno Oeste", "Bloco 30 Apto 22A", "Nova Metrópole", "Caucaia", "CE", "405");
 		
-		userRepository.saveAll(Arrays.asList(franze, paulo,bob));
-		
-		Post post1 = new Post(null,sdf.parse("21/03/2018"), "Partiu Viagem","Vou viajar para São Paulo. Abraços!", new AuthorDTO(franze));
-		Post post2 = new Post(null,sdf.parse("23/03/2018"), "Bom Dia","Acordei feliz hoje!", new AuthorDTO(franze));
-		
-		CommentDTO c1 = new CommentDTO("Boa viagem mano!",sdf.parse("21/03/2018"), new AuthorDTO(paulo));
-		CommentDTO c2 = new CommentDTO("Aproveite!",sdf.parse("22/03/2018"), new AuthorDTO(bob));
-		CommentDTO c3 = new CommentDTO("Tenha um ótimo dia!",sdf.parse("23/03/2018"), new AuthorDTO(paulo));
-		
-		post1.getComments().addAll(Arrays.asList(c1, c2));
-		post2.getComments().addAll(Arrays.asList(c3));
-		
-		postRepository.saveAll(Arrays.asList(post1, post2));
-		
-		franze.getPosts().addAll(Arrays.asList(post1, post2));
-		
-		userRepository.save(franze);*/
-		
+		User franze = new User(null, "Francisco José", "franze@gmail.com","123",new ArrayList<String>(),true, ender,new EmpresaDTO());
+		User paulo = new User(null, "Paulo José", "paulo@gmail.com","123",new ArrayList<String>(),true, ender,new EmpresaDTO());
+				
+		userRepository.saveAll(Arrays.asList(franze, paulo));
 	}
-
 }

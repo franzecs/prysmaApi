@@ -42,12 +42,16 @@ public class UserService {
 	}
 	
 	public void updateData(User newUser, User user) {
-		if(user.getNome() != null) {
-			newUser.setNome(user.getNome());
+		if(user.getSenha() != null) {
+			newUser.setSenha(user.getSenha());
 		}
-		if(user.getEmail() != null) {
-			newUser.setEmail(user.getEmail());
-		}		
+		newUser.setNome(user.getNome());
+		newUser.setEmail(user.getEmail());
+		newUser.setEmpresa(user.getEmpresa());
+		newUser.setEndereco(user.getEndereco());
+		newUser.setIsAtivo(user.getIsAtivo());
+		newUser.setPerfis(user.getPerfis());
+		newUser.setUrl_perfil(user.getUrl_perfil());
 	}
 	
 	public User fromDTO(UserDTO userDto) {
