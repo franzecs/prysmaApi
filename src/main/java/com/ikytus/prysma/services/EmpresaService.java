@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ikytus.prysma.domain.Empresa;
-import com.ikytus.prysma.dto.EmpresaDTO;
 import com.ikytus.prysma.repository.EmpresaRepository;
 import com.ikytus.prysma.services.exception.ObjectNotFoundException;
 

@@ -35,14 +35,13 @@ public class EmpresaResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<EmpresaDTO> findId(@PathVariable String id){
+	public ResponseEntity<Empresa> findId(@PathVariable String id){
 		Empresa empresa = service.findById(id);
-		return ResponseEntity.ok().body(new EmpresaDTO(empresa));
+		return ResponseEntity.ok().body(empresa);
 	}
 	
 	@PostMapping
 	public ResponseEntity<Void> insert(@RequestBody Empresa empresa){
-		//Empresa empresa = service.fromDTO(objDto);
 		empresa = service.insert(empresa);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(empresa.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -56,7 +55,6 @@ public class EmpresaResource {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@RequestBody Empresa empresa, @PathVariable String id){
-		//Empresa empresa = service.fromDTO(objDto);
 		empresa.setId(id);
 		empresa = service.update(empresa);
 		return ResponseEntity.noContent().build();
