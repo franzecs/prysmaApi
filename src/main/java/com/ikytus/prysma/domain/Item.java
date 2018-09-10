@@ -3,6 +3,7 @@ package com.ikytus.prysma.domain;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.ikytus.prysma.dto.ProdutoDTO;
@@ -13,6 +14,8 @@ public class Item implements Serializable{
 	
 	@Id
     private String id;
+	
+	@DBRef(lazy=true)
 	private Pedido pedido;
 	private ProdutoDTO produto;
     private int quantidade;

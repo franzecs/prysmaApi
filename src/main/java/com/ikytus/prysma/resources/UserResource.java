@@ -1,6 +1,7 @@
 package com.ikytus.prysma.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ikytus.prysma.domain.Empresa;
 import com.ikytus.prysma.domain.User;
+import com.ikytus.prysma.dto.EmpresaDTO;
 import com.ikytus.prysma.dto.UserDTO;
+import com.ikytus.prysma.services.EmpresaService;
 import com.ikytus.prysma.services.UserService;
 
 @RestController
@@ -26,6 +30,9 @@ public class UserResource {
 	
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private EmpresaService empresaService;
 	
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll(){
@@ -60,5 +67,20 @@ public class UserResource {
 		user.setId(id);
 		user = service.update(user);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/{id}/empresas")
+	public ResponseEntity<List<EmpresaDTO>> findEmpresas(@PathVariable String id){
+		User user = service.findById(id);
+		List<Empresa> list= new ArrayList<>();
+		
+		if(user.getPerfis().contains("ADM_SIS")) {
+			list = empresaService.findAll();
+		}else {
+			String idEmpresa = service.findById(id).getEmpresa().getId();
+			list = service.empresasFindByUser(idEmpresa);
+		}
+		List<EmpresaDTO> listDTO = list.stream().map(x -> new EmpresaDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 }

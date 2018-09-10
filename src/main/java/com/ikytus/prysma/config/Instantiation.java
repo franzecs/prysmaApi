@@ -40,12 +40,21 @@ public class Instantiation implements CommandLineRunner {
 		
 		Empresa emp1 = new Empresa(null, "Ikytus Sistemas", "03.729.627/0001-76", ender, "(85)988951038", "ikytussistemas@gmail.com", "Matriz", new EmpresaDTO(), "");
 		Empresa emp2 = new Empresa(null, "Teste Sistemas", "03.729.627/0001-76", ender, "(85)988951038", "testesistemas@gmail.com", "Matriz", new EmpresaDTO(), "");
-
+	
 		empresaRepository.saveAll(Arrays.asList(emp1, emp2));
-				
+		
+		Empresa emp3 = new Empresa(null, "Teste filial_1", "03.729.627/0001-76", ender, "(85)988951038", "testesistemas@gmail.com", "Filial", new EmpresaDTO(emp1), "");
+		Empresa emp4 = new Empresa(null, "Teste filial_2", "03.729.627/0001-76", ender, "(85)988951038", "testesistemas@gmail.com", "Filial", new EmpresaDTO(emp1), "");
+		Empresa emp5 = new Empresa(null, "Teste filial_3", "03.729.627/0001-76", ender, "(85)988951038", "testesistemas@gmail.com", "Filial", new EmpresaDTO(emp2), "");
+		
+		empresaRepository.saveAll(Arrays.asList(emp3, emp4, emp5));
+		
 		User franze = new User(null, "Francisco José", "franze@gmail.com","123",new ArrayList<String>(),true, ender,new EmpresaDTO(emp1));
 		User paulo = new User(null, "Paulo José", "paulo@gmail.com","123",new ArrayList<String>(),true, ender,new EmpresaDTO(emp2));
-				
+		
+		franze.getPerfis().add("ADM_SIS");
+		paulo.getPerfis().addAll(Arrays.asList("ADM_LOJA","USER_LOJA"));
+		
 		userRepository.saveAll(Arrays.asList(franze, paulo));
 	}
 }
