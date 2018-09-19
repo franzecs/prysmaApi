@@ -21,13 +21,13 @@ public class Cliente implements Serializable{
 	private String telefone;
 	private String email;
 	private Endereco endereco;
-	private EmpresaDTO empresa;
+	private Empresa empresa;
 	
 	public Cliente() {
 	}
 	
 	public Cliente(String id, String nome, String cpf, String rg, Date dataNascimento, String telefone,
-			String email, Endereco endereco, EmpresaDTO empresa) {
+			String email, Endereco endereco, Empresa empresa) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -104,11 +104,11 @@ public class Cliente implements Serializable{
 		this.endereco = endereco;
 	}
 	
-	public EmpresaDTO getEmpresa() {
+	public Empresa getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(EmpresaDTO empresa) {
+	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
 

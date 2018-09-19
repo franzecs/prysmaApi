@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ikytus.prysma.domain.Empresa;
+import com.ikytus.prysma.domain.Response;
 import com.ikytus.prysma.domain.User;
+import com.ikytus.prysma.domain.enums.ProfileEnum;
 import com.ikytus.prysma.dto.EmpresaDTO;
 import com.ikytus.prysma.dto.UserDTO;
 import com.ikytus.prysma.services.EmpresaService;
@@ -26,6 +31,7 @@ import com.ikytus.prysma.services.UserService;
 
 @RestController
 @RequestMapping(value="/users")
+@CrossOrigin(origins="*")
 public class UserResource {
 	
 	@Autowired
@@ -34,12 +40,14 @@ public class UserResource {
 	@Autowired
 	private EmpresaService empresaService;
 	
-	@GetMapping
-	public ResponseEntity<List<UserDTO>> findAll(){
-		List<User> list = service.findAll();
-		List<UserDTO> listDTO = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDTO);
-	}
+	@GetMapping(value = "{page}/{count}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+    public  ResponseEntity<Response<Page<User>>> findAll(@PathVariable int page, @PathVariable int count) {
+		Response<Page<User>> response = new Response<Page<User>>();
+		Page<User> users = service.findAll(page, count);
+		response.setData(users);
+		return ResponseEntity.ok(response);
+    }
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> findId(@PathVariable String id){
@@ -74,7 +82,7 @@ public class UserResource {
 		User user = service.findById(id);
 		List<Empresa> list= new ArrayList<>();
 		
-		if(user.getPerfis().contains("ADM_SIS")) {
+		if(user.getProfile().equals(ProfileEnum.ROLE_ADMIN)) {
 			list = empresaService.findAll();
 		}else {
 			String idEmpresa = service.findById(id).getEmpresa().getId();

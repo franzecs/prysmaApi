@@ -1,12 +1,16 @@
 package com.ikytus.prysma.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.ikytus.prysma.domain.enums.ProfileEnum;
 import com.ikytus.prysma.dto.EmpresaDTO;
 
 @Document
@@ -16,30 +20,41 @@ public class User implements Serializable{
 	@Id
 	private String id;
 	private String nome;
+	
+	@Indexed(unique = true)
+	@NotBlank(message = "Email required")
+	@Email(message = "Email invalid")
 	private String email;
-	private String senha;
-    private List<String>perfis = new ArrayList<>();
+	
+	@NotBlank(message = "Password required")
+	@Size(min = 6)
+	private String password;
+	
+	private ProfileEnum profile;
     private Boolean isAtivo;
     private Endereco endereco;
     private EmpresaDTO empresa;
     private String url_perfil;
-		
+			
+    
 	public User() {
 	}
 
-	public User(String id, String nome, String email, String senha, List<String> perfis, Boolean isAtivo,
-			Endereco endereco, EmpresaDTO empresa) {
+	public User(String id, String nome, String email, String password, ProfileEnum profile,	Boolean isAtivo, 
+				Endereco endereco, EmpresaDTO empresa, String url_perfil) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.senha = senha;
-		this.perfis = perfis;
+		this.password = password;
+		this.profile = profile;
 		this.isAtivo = isAtivo;
 		this.endereco = endereco;
 		this.empresa = empresa;
+		this.url_perfil = url_perfil;
 	}
-	
+
+
 	public String getId() {
 		return id;
 	}
@@ -64,22 +79,22 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public List<String> getPerfis() {
-		return perfis;
+	public ProfileEnum getProfile() {
+		return profile;
 	}
 
-	public void setPerfis(List<String> perfis) {
-		this.perfis = perfis;
+	public void setProfile(ProfileEnum profile) {
+		this.profile = profile;
 	}
-
+	
 	public Boolean getIsAtivo() {
 		return isAtivo;
 	}

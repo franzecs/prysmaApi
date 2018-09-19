@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.ikytus.prysma.domain.Cliente;
 import com.ikytus.prysma.repository.ClienteRepository;
-import com.ikytus.prysma.repository.EmpresaRepository;
 import com.ikytus.prysma.services.exception.ObjectNotFoundException;
 
 @Service
@@ -16,13 +15,7 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
-	@Autowired
-	private EmpresaRepository empresaRepository;
-	
-	@Autowired
-	private EmpresaService empresaService;	
-	
+			
 	public List<Cliente> findAll(){
 		return clienteRepository.findAll();
 	}
