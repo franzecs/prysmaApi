@@ -6,8 +6,6 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.ikytus.prysma.dto.EmpresaDTO;
-
 @Document
 public class Cliente implements Serializable{
 	private static final long serialVersionUID = 1L;

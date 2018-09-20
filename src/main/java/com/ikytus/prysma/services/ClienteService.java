@@ -1,9 +1,12 @@
 package com.ikytus.prysma.services;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ikytus.prysma.domain.Cliente;
@@ -16,15 +19,36 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 			
-	public List<Cliente> findAll(){
-		return clienteRepository.findAll();
+	public Page<Cliente> findAll(int page, int count){
+		//Pageable pages = PageRequest.of(page, count);
+		return clienteRepository.findAll(this.pages(page, count));
+	}
+	
+	public Page<Cliente> findByEmpresa(int page, int count, String empresaId) {
+		//Pageable pages = PageRequest.of(page, count);
+		return this.clienteRepository.findByEmpresaId(this.pages(page, count), empresaId);
+	}
+		
+	public Page<Cliente> findByNome(int page, int count, String nome) {
+		//Pageable pages = PageRequest.of(page, count);
+		return this.clienteRepository.findByNomeIgnoreCaseContaining(this.pages(page, count), nome);
+	}
+	
+	public Page<Cliente> findByCpf(int page, int count, String cpf) {
+		//Pageable pages = PageRequest.of(page, count);
+		return this.clienteRepository.findByCpfIgnoreCaseContaining(this.pages(page, count), cpf);
+	}
+	
+	public Page<Cliente> findByAniversario(int page, int count, Date dataInicial, Date dataFinal) {
+		//Pageable pages = PageRequest.of(page, count);
+		return this.clienteRepository.findByDataNascimentoBetween(this.pages(page, count), dataInicial, dataFinal);
 	}
 	
 	public Cliente findById(String id) {
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		return cliente.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
-	
+		
 	public Cliente insert (Cliente cliente) {
 		return clienteRepository.insert(cliente);
 	}
@@ -57,11 +81,9 @@ public class ClienteService {
 		return new Cliente(clienteDto.getId(), clienteDto.getNome(), clienteDto.getEmail(), "", clienteDto.getPerfis(), clienteDto.getIsAtivo(), clienteDto.getEndereco(), clienteDto.getEmpresa());
 	}
 	
-	public List<Empresa> empresasFindByCliente(String id){
-			List<Empresa> empresas = new ArrayList<>();
-			empresas.add(empresaService.findById(id));
-			empresas.addAll(empresaRepository.findByMatrizId(id));
-		return empresas;
-	}
 	*/
+	
+	public Pageable pages(int page, int count) {
+		return PageRequest.of(page, count);
+	}
 }
