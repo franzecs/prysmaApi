@@ -29,19 +29,19 @@ public class ClienteService {
 		return this.clienteRepository.findByEmpresaId(this.pages(page, count), empresaId);
 	}
 		
-	public Page<Cliente> findByNome(int page, int count, String nome) {
+	public Page<Cliente> findByNome(int page, int count, String nome, String empresaId) {
 		//Pageable pages = PageRequest.of(page, count);
-		return this.clienteRepository.findByNomeIgnoreCaseContaining(this.pages(page, count), nome);
+		return this.clienteRepository.findByNomeIgnoreCaseContainingAndEmpresaId(this.pages(page, count), nome, empresaId);
 	}
 	
-	public Page<Cliente> findByCpf(int page, int count, String cpf) {
+	public Page<Cliente> findByCpf(int page, int count, String cpf, String empresaId) {
 		//Pageable pages = PageRequest.of(page, count);
-		return this.clienteRepository.findByCpfIgnoreCaseContaining(this.pages(page, count), cpf);
+		return this.clienteRepository.findByCpfIgnoreCaseContainingAndEmpresaId(this.pages(page, count), cpf, empresaId);
 	}
 	
-	public Page<Cliente> findByAniversario(int page, int count, Date dataInicial, Date dataFinal) {
+	public Page<Cliente> findByAniversario(int page, int count, Date dataInicial, Date dataFinal, String empresaId) {
 		//Pageable pages = PageRequest.of(page, count);
-		return this.clienteRepository.findByDataNascimentoBetween(this.pages(page, count), dataInicial, dataFinal);
+		return this.clienteRepository.findByDataNascimentoBetweenAndEmpresaId(this.pages(page, count), dataInicial, dataFinal, empresaId);
 	}
 	
 	public Cliente findById(String id) {
@@ -49,8 +49,8 @@ public class ClienteService {
 		return cliente.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 		
-	public Cliente insert (Cliente cliente) {
-		return clienteRepository.insert(cliente);
+	public Cliente createOrUpdate(Cliente cliente) {
+		return this.clienteRepository.save(cliente);
 	}
 		
 	public void delete(String id) {

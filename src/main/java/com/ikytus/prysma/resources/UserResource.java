@@ -40,7 +40,7 @@ public class UserResource {
 	@Autowired
 	private EmpresaService empresaService;
 	
-	@GetMapping(value = "{page}/{count}")
+	@GetMapping("/{page}/{count}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
     public  ResponseEntity<Response<Page<User>>> findAll(@PathVariable int page, @PathVariable int count) {
 		Response<Page<User>> response = new Response<Page<User>>();
