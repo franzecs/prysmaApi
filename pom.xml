@@ -6,7 +6,7 @@
 	<groupId>com.ikytus</groupId>
 	<artifactId>PrysmaApi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>PrysmaApi</name>
 	<description>Api do Sistema Prysma</description>
