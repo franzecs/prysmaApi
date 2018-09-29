@@ -3,8 +3,13 @@ package com.ikytus.prysma.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.ikytus.prysma.dto.EmpresaDTO;
 
 @Document
 public class Cliente implements Serializable{
@@ -12,20 +17,30 @@ public class Cliente implements Serializable{
 
 	@Id
 	private String id;
+	
+	@NotBlank (message="Nome obrigatório")
 	private String nome;
+	
 	private String cpf;
+	
 	private String rg;
+	
 	private Date dataNascimento;
+	
 	private String telefone;
+	
+	@Email(message="E-mail obrigatório")
 	private String email;
+	
 	private Endereco endereco;
-	private Empresa empresa;
+	
+	private EmpresaDTO empresa;
 	
 	public Cliente() {
 	}
 	
 	public Cliente(String id, String nome, String cpf, String rg, Date dataNascimento, String telefone,
-			String email, Endereco endereco, Empresa empresa) {
+			String email, Endereco endereco, EmpresaDTO empresa) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -101,12 +116,12 @@ public class Cliente implements Serializable{
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
-	public Empresa getEmpresa() {
+		
+	public EmpresaDTO getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Empresa empresa) {
+	public void setEmpresa(EmpresaDTO empresa) {
 		this.empresa = empresa;
 	}
 

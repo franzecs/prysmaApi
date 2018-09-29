@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ikytus.prysma.domain.Cliente;
 import com.ikytus.prysma.domain.Response;
 import com.ikytus.prysma.services.ClienteService;
+import com.ikytus.prysma.services.UserService;
 
 @RestController
 @RequestMapping(value="/Clientes")
@@ -30,28 +31,24 @@ public class ClienteResource {
 	
 	@Autowired
 	private ClienteService service;
-			
+	
+	@Autowired
+	private UserService userService;
+		
+		
 	@GetMapping(value="{page}/{count}")
-    public  ResponseEntity<Response<Page<Cliente>>> findAll(@PathVariable int page, @PathVariable int count) {
+    public  ResponseEntity<Response<Page<Cliente>>> findAllByEmpresa(@PathVariable int page, @PathVariable int count, HttpServletRequest request) {
 		Response<Page<Cliente>> response = new Response<Page<Cliente>>();
-		Page<Cliente> clientes = service.findAll(page, count);
+		Page<Cliente> clientes = service.findByEmpresa(page, count, userService.userFromRequest(request).getEmpresa().getId());
 		response.setData(clientes);
 		return ResponseEntity.ok(response);
     }
 	
-	@GetMapping(value="{empresaId}/{page}/{count}")
-    public  ResponseEntity<Response<Page<Cliente>>> findByEmpresa(@PathVariable String empresaId,@PathVariable int page, @PathVariable int count) {
-		Response<Page<Cliente>> response = new Response<Page<Cliente>>();
-		Page<Cliente> clientes = service.findByEmpresa(page, count, empresaId);
-		response.setData(clientes);
-		return ResponseEntity.ok(response);
-    }
-	
-	@GetMapping(value="{empresaId}/{cpf}/{page}/{count}")
-    public  ResponseEntity<Response<Page<Cliente>>> findByCpf(@PathVariable String empresaId, @PathVariable String cpf, @PathVariable int page, @PathVariable int count) {
-		Response<Page<Cliente>> response = new Response<Page<Cliente>>();
-		Page<Cliente> clientes = service.findByCpf(page, count, cpf, empresaId);
-		response.setData(clientes);
+	@GetMapping(value="{cpf}")
+    public  ResponseEntity<Response<Cliente>> findByCpf(@PathVariable("cpf") String cpf) {
+		Response<Cliente> response = new Response<Cliente>();
+		Cliente cliente = service.findByCpf(cpf);
+		response.setData(cliente);
 		return ResponseEntity.ok(response);
     }
 	
@@ -70,12 +67,15 @@ public class ClienteResource {
 	
 	@PostMapping
 	public ResponseEntity<Response<Cliente>> insert(HttpServletRequest request, @RequestBody Cliente obj, BindingResult result){
+		
+		obj.setEmpresa(userService.userFromRequest(request).getEmpresa());
+		
 		Cliente cliente = service.createOrUpdate(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping(value="/{id}")
+	@PutMapping(value="{id}")
 	public ResponseEntity<Response<Cliente>> update(@RequestBody Cliente cliente, @PathVariable String id){
 		Response<Cliente> response = new Response<Cliente>();
 		cliente.setId(id);
@@ -83,7 +83,7 @@ public class ClienteResource {
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping(value="/{id}")
+	@DeleteMapping(value="{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();

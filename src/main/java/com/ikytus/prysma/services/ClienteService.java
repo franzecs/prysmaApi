@@ -20,27 +20,23 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 			
 	public Page<Cliente> findAll(int page, int count){
-		//Pageable pages = PageRequest.of(page, count);
 		return clienteRepository.findAll(this.pages(page, count));
 	}
 	
 	public Page<Cliente> findByEmpresa(int page, int count, String empresaId) {
-		//Pageable pages = PageRequest.of(page, count);
 		return this.clienteRepository.findByEmpresaId(this.pages(page, count), empresaId);
 	}
 		
 	public Page<Cliente> findByNome(int page, int count, String nome, String empresaId) {
-		//Pageable pages = PageRequest.of(page, count);
+
 		return this.clienteRepository.findByNomeIgnoreCaseContainingAndEmpresaId(this.pages(page, count), nome, empresaId);
 	}
 	
-	public Page<Cliente> findByCpf(int page, int count, String cpf, String empresaId) {
-		//Pageable pages = PageRequest.of(page, count);
-		return this.clienteRepository.findByCpfIgnoreCaseContainingAndEmpresaId(this.pages(page, count), cpf, empresaId);
+	public Cliente findByCpf(String cpf) {
+		return this.clienteRepository.findByCpf(cpf);
 	}
 	
 	public Page<Cliente> findByAniversario(int page, int count, Date dataInicial, Date dataFinal, String empresaId) {
-		//Pageable pages = PageRequest.of(page, count);
 		return this.clienteRepository.findByDataNascimentoBetweenAndEmpresaId(this.pages(page, count), dataInicial, dataFinal, empresaId);
 	}
 	

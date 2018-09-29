@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,7 @@ import com.ikytus.prysma.domain.User;
 import com.ikytus.prysma.dto.UserDTO;
 import com.ikytus.prysma.repository.EmpresaRepository;
 import com.ikytus.prysma.repository.UserRepository;
+import com.ikytus.prysma.security.jwt.JwtTokenUtil;
 import com.ikytus.prysma.services.exception.ObjectNotFoundException;
 
 @Service
@@ -28,6 +31,9 @@ public class UserService {
 	
 	@Autowired
 	private EmpresaService empresaService;	
+	
+	@Autowired
+    protected JwtTokenUtil jwtTokenUtil;
 	
 	public Page<User> findAll(int page, int count) {
 		Pageable pages = PageRequest.of(page, count);
@@ -81,4 +87,10 @@ public class UserService {
 			empresas.addAll(empresaRepository.findByMatrizId(id));
 		return empresas;
 	}
+	
+	public User userFromRequest(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String email = jwtTokenUtil.getUsernameFromToken(token);
+        return findByEmail(email);
+    }
 }

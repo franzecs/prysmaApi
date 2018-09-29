@@ -15,10 +15,10 @@ public interface ClienteRepository extends MongoRepository<Cliente, String> {
 	Page<Cliente> findByEmpresaId(Pageable pages, String empresaId);
 	
 	Page<Cliente> findByNomeIgnoreCaseContainingAndEmpresaId(Pageable pages,String nome, String empresaId);
-	
-	Page<Cliente> findByCpfIgnoreCaseContainingAndEmpresaId(Pageable pages,String cpf,String empresaId);
-			
+				
 	Page<Cliente> findByDataNascimentoBetweenAndEmpresaId(Pageable pages, Date dataInicial, Date dataFinal,String empresaId);
+	
+	Cliente findByCpf(String cpf);
 	
 	/*@Query("{ dataNascimento: {$gte: ?0} }, { date: { $lte: ?1} }")
 	Page<Cliente> findByAniversario(Date dataInicial, Date dataFinal);*/
