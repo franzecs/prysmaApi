@@ -25,7 +25,7 @@ import com.ikytus.prysma.services.ClienteService;
 import com.ikytus.prysma.services.UserService;
 
 @RestController
-@RequestMapping(value="/Clientes")
+@RequestMapping(value="/clientes")
 @CrossOrigin(origins="*")
 public class ClienteResource {
 	
