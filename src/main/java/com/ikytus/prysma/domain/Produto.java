@@ -13,7 +13,7 @@ public class Produto implements Serializable{
 
 	@Id
 	private String id;
-	private String descricao;
+	private String nome;
 	private String fabricante;
 	private int estoque;
     private Double valor;
@@ -22,10 +22,10 @@ public class Produto implements Serializable{
     public Produto() {
     }
 	
-	public Produto(String id, String descricao, String fabricante, int estoque, Double valor, EmpresaDTO empresa) {
+	public Produto(String id, String nome, String fabricante, int estoque, Double valor, EmpresaDTO empresa) {
 		super();
 		this.id = id;
-		this.descricao = descricao;
+		this.nome = nome;
 		this.fabricante = fabricante;
 		this.estoque = estoque;
 		this.valor = valor;
@@ -39,13 +39,13 @@ public class Produto implements Serializable{
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getDescricao() {
-		return descricao;
+	
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getFabricante() {
@@ -71,7 +71,7 @@ public class Produto implements Serializable{
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
+	
 	public EmpresaDTO getEmpresa() {
 		return empresa;
 	}

@@ -8,7 +8,7 @@ public class ProdutoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String id;
-	private String descricao;
+	private String nome;
 	private Double valor;
 	
 	public ProdutoDTO() {
@@ -18,7 +18,7 @@ public class ProdutoDTO implements Serializable{
 	public ProdutoDTO(Produto produto) {
 		super();
 		this.id = produto.getId();
-		this.descricao = produto.getDescricao();
+		this.nome = produto.getNome();
 		this.valor = produto.getValor();
 	}
 
@@ -30,12 +30,12 @@ public class ProdutoDTO implements Serializable{
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public Double getValor() {

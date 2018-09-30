@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.models.Endereco;
 import com.ikytus.prysma.dto.EmpresaDTO;
 
 @Document

@@ -2,9 +2,9 @@ package com.ikytus.prysma.dto;
 
 import java.io.Serializable;
 
-import com.ikytus.prysma.domain.Endereco;
 import com.ikytus.prysma.domain.User;
 import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.models.Endereco;
 
 public class UserDTO implements Serializable {	
 	private static final long serialVersionUID = 1L;

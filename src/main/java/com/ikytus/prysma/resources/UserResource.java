@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ikytus.prysma.domain.Empresa;
-import com.ikytus.prysma.domain.Response;
 import com.ikytus.prysma.domain.User;
 import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.models.Response;
 import com.ikytus.prysma.dto.EmpresaDTO;
 import com.ikytus.prysma.dto.UserDTO;
 import com.ikytus.prysma.services.EmpresaService;

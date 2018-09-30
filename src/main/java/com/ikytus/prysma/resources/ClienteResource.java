@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ikytus.prysma.domain.Cliente;
-import com.ikytus.prysma.domain.Response;
+import com.ikytus.prysma.domain.models.Response;
 import com.ikytus.prysma.services.ClienteService;
 import com.ikytus.prysma.services.UserService;
 
@@ -34,6 +34,22 @@ public class ClienteResource {
 	
 	@Autowired
 	private UserService userService;
+	
+	@PostMapping
+	public ResponseEntity<Response<Cliente>> insert(HttpServletRequest request, @RequestBody Cliente obj, BindingResult result){	
+		obj.setEmpresa(userService.userFromRequest(request).getEmpresa());
+		Cliente cliente = service.createOrUpdate(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@PutMapping(value="{id}")
+	public ResponseEntity<Response<Cliente>> update(@RequestBody Cliente cliente, @PathVariable String id){
+		Response<Cliente> response = new Response<Cliente>();
+		cliente.setId(id);
+		response.setData(service.update(cliente));
+		return ResponseEntity.ok(response);
+	}
 		
 		
 	@GetMapping(value="{page}/{count}")
@@ -44,11 +60,19 @@ public class ClienteResource {
 		return ResponseEntity.ok(response);
     }
 	
-	@GetMapping(value="{cpf}")
+	@GetMapping(value="/c/{cpf}")
     public  ResponseEntity<Response<Cliente>> findByCpf(@PathVariable("cpf") String cpf) {
 		Response<Cliente> response = new Response<Cliente>();
 		Cliente cliente = service.findByCpf(cpf);
 		response.setData(cliente);
+		return ResponseEntity.ok(response);
+    }
+	
+	@GetMapping(value="/n/{nome}/{page}/{count}")
+    public  ResponseEntity<Response<Page<Cliente>>> findByNome(@PathVariable("nome") String nome, @PathVariable int page, @PathVariable int count, HttpServletRequest request) {
+		Response<Page<Cliente>> response = new Response<Page<Cliente>>();
+		Page<Cliente> clientes = service.findByNome(page, count, nome, userService.userFromRequest(request).getEmpresa().getId());
+		response.setData(clientes);
 		return ResponseEntity.ok(response);
     }
 	
@@ -61,25 +85,6 @@ public class ClienteResource {
 			return ResponseEntity.badRequest().body(response);
 		}
 		response.setData(cliente);
-		return ResponseEntity.ok(response);
-	}
-	
-	
-	@PostMapping
-	public ResponseEntity<Response<Cliente>> insert(HttpServletRequest request, @RequestBody Cliente obj, BindingResult result){
-		
-		obj.setEmpresa(userService.userFromRequest(request).getEmpresa());
-		
-		Cliente cliente = service.createOrUpdate(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
-		return ResponseEntity.created(uri).build();
-	}
-	
-	@PutMapping(value="{id}")
-	public ResponseEntity<Response<Cliente>> update(@RequestBody Cliente cliente, @PathVariable String id){
-		Response<Cliente> response = new Response<Cliente>();
-		cliente.setId(id);
-		response.setData(service.update(cliente));
 		return ResponseEntity.ok(response);
 	}
 	

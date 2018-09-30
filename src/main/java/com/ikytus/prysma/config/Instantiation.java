@@ -11,9 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.ikytus.prysma.domain.Cliente;
 import com.ikytus.prysma.domain.Empresa;
-import com.ikytus.prysma.domain.Endereco;
 import com.ikytus.prysma.domain.User;
 import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.models.Endereco;
 import com.ikytus.prysma.dto.EmpresaDTO;
 import com.ikytus.prysma.repository.ClienteRepository;
 import com.ikytus.prysma.repository.EmpresaRepository;

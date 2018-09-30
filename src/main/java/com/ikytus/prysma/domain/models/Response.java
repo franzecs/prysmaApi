@@ -1,4 +1,4 @@
-package com.ikytus.prysma.domain;
+package com.ikytus.prysma.domain.models;
 
 import java.util.ArrayList;
 import java.util.List;
