@@ -49,8 +49,8 @@ public class UserService {
 		return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 	
-	public User insert (User user) {
-		return userRepository.insert(user);
+	public User createOrUpdate (User user) {
+		return userRepository.save(user);
 	}
 		
 	public void delete(String id) {

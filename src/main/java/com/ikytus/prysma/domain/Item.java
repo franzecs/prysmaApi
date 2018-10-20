@@ -17,6 +17,7 @@ public class Item implements Serializable{
 	
 	@DBRef(lazy=true)
 	private Pedido pedido;
+	
 	private ProdutoDTO produto;
     private int quantidade;
                

@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +29,6 @@ import com.ikytus.prysma.domain.User;
 import com.ikytus.prysma.domain.enums.ProfileEnum;
 import com.ikytus.prysma.domain.models.Response;
 import com.ikytus.prysma.dto.EmpresaDTO;
-import com.ikytus.prysma.dto.UserDTO;
 import com.ikytus.prysma.services.EmpresaService;
 import com.ikytus.prysma.services.UserService;
 
@@ -38,10 +41,13 @@ public class UserResource {
 	private UserService service;
 	
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private EmpresaService empresaService;
 	
 	@GetMapping("/{page}/{count}")
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA')")
     public  ResponseEntity<Response<Page<User>>> findAll(@PathVariable int page, @PathVariable int count) {
 		Response<Page<User>> response = new Response<Page<User>>();
 		Page<User> users = service.findAll(page, count);
@@ -50,31 +56,56 @@ public class UserResource {
     }
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDTO> findId(@PathVariable String id){
+	public ResponseEntity<Response<User>> findId(@PathVariable String id){
+		Response<User> response = new Response<User>();
 		User user = service.findById(id);
-		return ResponseEntity.ok().body(new UserDTO(user));
+		if (user == null) {
+			response.getErrors().add("Register not found id:" + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+		response.setData(user);
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){
-		User user = service.fromDTO(objDto);
-		user = service.insert(user);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+	public ResponseEntity<Response<User>> create(HttpServletRequest request, @RequestBody User user, BindingResult result){
+		Response<User> response = new Response<User>();
+		
+		if(result.hasErrors()) {
+			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()) );
+			return ResponseEntity.badRequest().body(response);
+		}
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		User userPersistend = service.createOrUpdate(user);
+		response.setData(userPersistend);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userPersistend.getId()).toUri();
+		return ResponseEntity.created(uri).body(response);
+	}
+	
+	@PutMapping()
+	public ResponseEntity<Response<User>> update(HttpServletRequest request, @RequestBody User user, BindingResult result){
+		Response<User> response = new Response<User>();
+		
+		if(result.hasErrors()) {
+			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()) );
+			return ResponseEntity.badRequest().body(response);
+		}
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		User userPersistend = service.createOrUpdate(user);
+		response.setData(userPersistend);
+		return ResponseEntity.ok(response);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable String id){
+	public ResponseEntity<Response<String>> delete(@PathVariable("id") String id) {
+		Response<String> response = new Response<String>();
+		User user = service.findById(id);
+		if (user == null) {
+			response.getErrors().add("Register not found id:" + id);
+			return ResponseEntity.badRequest().body(response);
+		}
 		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){
-		User user = service.fromDTO(objDto);
-		user.setId(id);
-		user = service.update(user);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(new Response<String>());
 	}
 	
 	@GetMapping("/{id}/empresas")
@@ -82,7 +113,7 @@ public class UserResource {
 		User user = service.findById(id);
 		List<Empresa> list= new ArrayList<>();
 		
-		if(user.getProfile().equals(ProfileEnum.ROLE_ADMIN)) {
+		if(user.getProfile().equals(ProfileEnum.ROLE_ADMIN_SISTEMA)) {
 			list = empresaService.findAll();
 		}else {
 			String idEmpresa = service.findById(id).getEmpresa().getId();

@@ -60,9 +60,9 @@ public class Instantiation implements CommandLineRunner {
 		
 		empresaRepository.saveAll(Arrays.asList(emp3, emp4, emp5));
 		
-		User franze = new User(null, "Francisco José", "franze@gmail.com",passwordEncoder.encode("123456"),ProfileEnum.ROLE_ADMIN,true, ender,new EmpresaDTO(emp1),"");
+		User franze = new User(null, "Francisco José", "franzecs@gmail.com",passwordEncoder.encode("123456"),ProfileEnum.ROLE_ADMIN_SISTEMA,true, ender,new EmpresaDTO(emp1),"");
 		
-		User paulo = new User(null, "Paulo José", "paulo@gmail.com",passwordEncoder.encode("123456"),ProfileEnum.ROLE_CUSTOMER,true, ender,new EmpresaDTO(emp2),"");
+		User paulo = new User(null, "Paulo José", "paulo@gmail.com",passwordEncoder.encode("123456"),ProfileEnum.ROLE_CLIENTE,true, ender,new EmpresaDTO(emp2),"");
 						
 		userRepository.saveAll(Arrays.asList(franze, paulo));
 		

@@ -1,17 +1,15 @@
 package com.ikytus.prysma.domain.enums;
 
-public enum ProfileEnum {
+public enum TipoEmpresaEnum {
 	
-	ROLE_ADMIN_SISTEMA(1, "ADMINISTRADOR DO SISTEMA"),
-	ROLE_ADMIN_EMPRESA(2, "ADMINISTRADOR DA EMPRESA"),
-	ROLE_GERENTE_LOJA(3, "GERENTE DA UNIDADE"),
-	ROLE_VENDEDOR(4, "VENDEDOR"),
-	ROLE_CLIENTE(5, "CLIENTE");
-		
+	MATRIZ(1, "ADMINISTRADOR DO SISTEMA"),
+	FILIAL(2, "ADMINISTRADOR DA EMPRESA"),
+	FORNECEDOR(3, "GERENTE DA UNIDADE");
+			
 	private int cod;
 	private String descricao;
 	
-	private ProfileEnum(int cod, String descricao) {
+	private TipoEmpresaEnum(int cod, String descricao) {
 		this.cod = cod;
 		this.descricao=descricao;
 	}
@@ -24,12 +22,12 @@ public enum ProfileEnum {
 		return descricao;
 	}
 	
-	public static ProfileEnum toEnum(Integer cod) {
+	public static TipoEmpresaEnum toEnum(Integer cod) {
 		if(cod==null) {
 			return null;
 		}
 		
-		for (ProfileEnum x : ProfileEnum.values()) {
+		for (TipoEmpresaEnum x : TipoEmpresaEnum.values()) {
 			if(cod.equals(x.getCod())) {
 				return x;
 			}
