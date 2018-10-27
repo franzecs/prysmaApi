@@ -99,15 +99,10 @@ public class UserResource {
 	}
 	
 	@PatchMapping("/status/{id}")
-	public ResponseEntity<Void> updateStatus(@RequestBody String status, 
+	public ResponseEntity<Void> updateStatus(@RequestBody Boolean status, 
 			@PathVariable("id") String id, BindingResult result){
-		
-		if(status == "false") {
-			service.updateStatus(false, id);
-		}else {
-			service.updateStatus(true, id);
-		}
-		
+		System.out.println("Status na api: " + status);
+		service.updateStatus(status, id);
 		return ResponseEntity.noContent().build();
 	}
 			
