@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -101,7 +100,7 @@ public class UserResource {
 	@PutMapping("/{status}/{id}")
 	public ResponseEntity<Response<String>> updateStatus(
 			@PathVariable("status") String status, 
-			@PathVariable("id") String id, BindingResult result){
+			@PathVariable("id") String id){
 		
 		System.out.println("Status na api: " + status);
 		service.updateStatus(status, id);
