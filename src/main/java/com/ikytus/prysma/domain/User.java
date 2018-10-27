@@ -34,7 +34,7 @@ public class User implements Serializable{
 	private String password;
 	
 	private List<ProfileEnum> profile = new ArrayList<>();
-    private Boolean isAtivo;
+    private boolean isAtivo;
     private Endereco endereco;
     private EmpresaDTO empresa;
     private String url_perfil;

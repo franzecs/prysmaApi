@@ -98,9 +98,11 @@ public class UserResource {
 		return ResponseEntity.ok(response);
 	}
 	
-	@PatchMapping("/status/{id}")
-	public ResponseEntity<Void> updateStatus(@RequestBody Boolean status, 
+	@PatchMapping("/{status}/{id}")
+	public ResponseEntity<Void> updateStatus(
+			@PathVariable("status") String status, 
 			@PathVariable("id") String id, BindingResult result){
+		
 		System.out.println("Status na api: " + status);
 		service.updateStatus(status, id);
 		return ResponseEntity.noContent().build();

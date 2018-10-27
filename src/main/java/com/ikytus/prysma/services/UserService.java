@@ -64,9 +64,14 @@ public class UserService {
 		return userRepository.save(newUser);
 	}
 	
-	public User updateStatus(boolean status, String id) {
+	public User updateStatus(String status, String id) {
 		User newUser = findById(id);
-		newUser.setIsAtivo(status);
+		if(status == "true") {
+			newUser.setIsAtivo(true);
+		}else {
+			newUser.setIsAtivo(false);
+		}
+		
 		return userRepository.save(newUser);
 	}
 	
