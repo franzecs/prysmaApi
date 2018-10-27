@@ -99,13 +99,13 @@ public class UserResource {
 	}
 	
 	@PatchMapping("/{status}/{id}")
-	public ResponseEntity<Void> updateStatus(
+	public ResponseEntity<Response<String>> updateStatus(
 			@PathVariable("status") String status, 
 			@PathVariable("id") String id, BindingResult result){
 		
 		System.out.println("Status na api: " + status);
 		service.updateStatus(status, id);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(new Response<String>());
 	}
 			
 	@DeleteMapping("/{id}")
