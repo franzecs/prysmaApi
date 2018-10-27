@@ -98,7 +98,7 @@ public class UserResource {
 		return ResponseEntity.ok(response);
 	}
 	
-	@PatchMapping("/{status}/{id}")
+	@PutMapping("/{status}/{id}")
 	public ResponseEntity<Response<String>> updateStatus(
 			@PathVariable("status") String status, 
 			@PathVariable("id") String id, BindingResult result){
