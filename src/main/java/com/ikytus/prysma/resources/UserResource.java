@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,6 +57,7 @@ public class UserResource {
     }
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_EMPRESA')")
 	public ResponseEntity<Response<User>> findId(@PathVariable String id){
 		Response<User> response = new Response<User>();
 		User user = service.findById(id);
@@ -96,6 +98,15 @@ public class UserResource {
 		return ResponseEntity.ok(response);
 	}
 	
+	@PatchMapping("/status/{id}")
+	public ResponseEntity<Void> updateStatus(@RequestBody boolean status, 
+			@PathVariable("id") String id, BindingResult result){
+	
+		service.updateStatus(status, id);
+		
+		return ResponseEntity.noContent().build();
+	}
+			
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response<String>> delete(@PathVariable("id") String id) {
 		Response<String> response = new Response<String>();
@@ -113,7 +124,7 @@ public class UserResource {
 		User user = service.findById(id);
 		List<Empresa> list= new ArrayList<>();
 		
-		if(user.getProfile().equals(ProfileEnum.ROLE_ADMIN_SISTEMA)) {
+		if(user.getProfile().contains(ProfileEnum.ADMIN_SISTEMA)) {
 			list = empresaService.findAll();
 		}else {
 			String idEmpresa = service.findById(id).getEmpresa().getId();

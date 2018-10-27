@@ -1,6 +1,7 @@
 package com.ikytus.prysma.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.ikytus.prysma.domain.User;
 import com.ikytus.prysma.domain.enums.ProfileEnum;
@@ -12,7 +13,7 @@ public class UserDTO implements Serializable {
 	private String id;
 	private String nome;
 	private String email;
-	private ProfileEnum profile;
+	private List<ProfileEnum> profile;
     private Boolean isAtivo;
     private Endereco endereco;
     private EmpresaDTO empresa;
@@ -54,12 +55,12 @@ public class UserDTO implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public ProfileEnum getProfile() {
+	
+	public List<ProfileEnum> getProfile() {
 		return profile;
 	}
 
-	public void setProfile(ProfileEnum profile) {
+	public void setProfile(List<ProfileEnum> profile) {
 		this.profile = profile;
 	}
 

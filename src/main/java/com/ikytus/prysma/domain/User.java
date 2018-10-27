@@ -1,6 +1,8 @@
 package com.ikytus.prysma.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -31,7 +33,7 @@ public class User implements Serializable{
 	@Size(min = 6)
 	private String password;
 	
-	private ProfileEnum profile;
+	private List<ProfileEnum> profile = new ArrayList<>();
     private Boolean isAtivo;
     private Endereco endereco;
     private EmpresaDTO empresa;
@@ -41,14 +43,13 @@ public class User implements Serializable{
 	public User() {
 	}
 
-	public User(String id, String nome, String email, String password, ProfileEnum profile,	Boolean isAtivo, 
+	public User(String id, String nome, String email, String password, Boolean isAtivo, 
 				Endereco endereco, EmpresaDTO empresa, String url_perfil) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.password = password;
-		this.profile = profile;
 		this.isAtivo = isAtivo;
 		this.endereco = endereco;
 		this.empresa = empresa;
@@ -87,15 +88,15 @@ public class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public ProfileEnum getProfile() {
+	
+	public List<ProfileEnum> getProfile() {
 		return profile;
 	}
 
-	public void setProfile(ProfileEnum profile) {
+	public void setProfile(List<ProfileEnum> profile) {
 		this.profile = profile;
 	}
-	
+
 	public Boolean getIsAtivo() {
 		return isAtivo;
 	}

@@ -60,10 +60,10 @@ public class Instantiation implements CommandLineRunner {
 		
 		empresaRepository.saveAll(Arrays.asList(emp3, emp4, emp5));
 		
-		User franze = new User(null, "Francisco José", "franzecs@gmail.com",passwordEncoder.encode("123456"),ProfileEnum.ROLE_ADMIN_SISTEMA,true, ender,new EmpresaDTO(emp1),"");
-		
-		User paulo = new User(null, "Paulo José", "paulo@gmail.com",passwordEncoder.encode("123456"),ProfileEnum.ROLE_CLIENTE,true, ender,new EmpresaDTO(emp2),"");
-						
+		User franze = new User(null, "Francisco José", "franzecs@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp1),"");
+		franze.setProfile(Arrays.asList(ProfileEnum.ADMIN_SISTEMA, ProfileEnum.ADMIN_EMPRESA));
+		User paulo = new User(null, "Paulo José", "paulo@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp2),"");
+		paulo.setProfile(Arrays.asList(ProfileEnum.VENDEDOR));				
 		userRepository.saveAll(Arrays.asList(franze, paulo));
 		
 		Cliente cli1 = new Cliente(null, "cliente 1", "", "", sdf.parse("02/05/1979"), "", "", ender,  new EmpresaDTO(emp1));

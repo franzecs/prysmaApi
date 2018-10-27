@@ -52,15 +52,21 @@ public class UserService {
 	public User createOrUpdate (User user) {
 		return userRepository.save(user);
 	}
-		
+				
 	public void delete(String id) {
 		findById(id);
 		userRepository.deleteById(id);
 	}
-	
+		
 	public User update(User user) {
 		User newUser = findById(user.getId());
 		updateData(newUser, user);
+		return userRepository.save(newUser);
+	}
+	
+	public User updateStatus(boolean status, String id) {
+		User newUser = findById(id);
+		newUser.setIsAtivo(status);
 		return userRepository.save(newUser);
 	}
 	
@@ -78,7 +84,8 @@ public class UserService {
 	}
 	
 	public User fromDTO(UserDTO userDto) {
-		return new User(userDto.getId(), userDto.getNome(), userDto.getEmail(), "", userDto.getProfile(), userDto.getIsAtivo(), userDto.getEndereco(), userDto.getEmpresa(), userDto.getUrl_perfil());
+		return new User(userDto.getId(), userDto.getNome(), userDto.getEmail(), "",
+				userDto.getIsAtivo(), userDto.getEndereco(), userDto.getEmpresa(), userDto.getUrl_perfil());
 	}
 	
 	public List<Empresa> empresasFindByUser(String id){
