@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,15 +25,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ikytus.prysma.domain.Empresa;
 import com.ikytus.prysma.domain.User;
-import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.enums.Perfil;
 import com.ikytus.prysma.domain.models.Response;
 import com.ikytus.prysma.dto.EmpresaDTO;
+import com.ikytus.prysma.security.UserService;
 import com.ikytus.prysma.services.EmpresaService;
-import com.ikytus.prysma.services.UserService;
 
 @RestController
 @RequestMapping(value="/users")
-@CrossOrigin(origins="*")
 public class UserResource {
 	
 	@Autowired
@@ -68,6 +66,18 @@ public class UserResource {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping("/currentuser/{email}")
+	public ResponseEntity<Response<User>> findEmail(@PathVariable String email){
+		Response<User> response = new Response<User>();
+		User user = service.findByEmail(email);
+		if (user == null) {
+			response.getErrors().add("Register not found id:" + email);
+			return ResponseEntity.badRequest().body(response);
+		}
+		response.setData(user);
+		return ResponseEntity.ok(response);
+	}
+	
 	@PostMapping
 	public ResponseEntity<Response<User>> create(HttpServletRequest request, @RequestBody User user, BindingResult result){
 		Response<User> response = new Response<User>();
@@ -76,7 +86,7 @@ public class UserResource {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()) );
 			return ResponseEntity.badRequest().body(response);
 		}
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setSenha(passwordEncoder.encode(user.getSenha()));
 		User userPersistend = service.createOrUpdate(user);
 		response.setData(userPersistend);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userPersistend.getId()).toUri();
@@ -91,7 +101,7 @@ public class UserResource {
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()) );
 			return ResponseEntity.badRequest().body(response);
 		}
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setSenha(passwordEncoder.encode(user.getSenha()));
 		User userPersistend = service.createOrUpdate(user);
 		response.setData(userPersistend);
 		return ResponseEntity.ok(response);
@@ -102,7 +112,6 @@ public class UserResource {
 			@PathVariable("status") String status, 
 			@PathVariable("id") String id){
 		
-		System.out.println("Status na api: " + status);
 		service.updateStatus(status, id);
 		return ResponseEntity.ok(new Response<String>());
 	}
@@ -124,7 +133,7 @@ public class UserResource {
 		User user = service.findById(id);
 		List<Empresa> list= new ArrayList<>();
 		
-		if(user.getProfile().contains(ProfileEnum.ADMIN_SISTEMA)) {
+		if(user.getPerfis().contains(Perfil.ADMIN_SISTEMA)) {
 			list = empresaService.findAll();
 		}else {
 			String idEmpresa = service.findById(id).getEmpresa().getId();

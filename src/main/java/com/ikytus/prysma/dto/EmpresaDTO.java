@@ -9,6 +9,9 @@ public class EmpresaDTO implements Serializable{
 	
 	private String id;
 	private String nome;
+    private String tipo;
+    private EmpresaDTO matriz;
+    private String email;
 	
 	public EmpresaDTO() {
 		
@@ -18,6 +21,9 @@ public class EmpresaDTO implements Serializable{
 		super();
 		this.id = empresa.getId();
 		this.nome = empresa.getNome();
+		this.tipo = empresa.getTipo();
+		this.matriz = empresa.getMatriz();
+		this.email = empresa.getEmail();
 	}
 
 	public String getId() {
@@ -34,5 +40,29 @@ public class EmpresaDTO implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public EmpresaDTO getMatriz() {
+		return matriz;
+	}
+
+	public void setMatriz(EmpresaDTO matriz) {
+		this.matriz = matriz;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

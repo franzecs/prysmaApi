@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ikytus.prysma.domain.Empresa;
@@ -14,42 +17,41 @@ import com.ikytus.prysma.services.exception.ObjectNotFoundException;
 public class EmpresaService {
 	
 	@Autowired
-	private EmpresaRepository repo;
+	private EmpresaRepository empresaRepository;
 	
-	public List<Empresa> findAll(){
-		return repo.findAll();
+	public Page<Empresa> findAllPage(int page, int count) {
+		Pageable pages = PageRequest.of(page, count);
+		return this.empresaRepository.findAll(pages);
 	}
 	
+	public List<Empresa> findAll(){
+		return this.empresaRepository.findAll();
+	}
+		
 	public Empresa findById(String id) {
-		Optional<Empresa> empresa = repo.findById(id);
+		Optional<Empresa> empresa = empresaRepository.findById(id);
 		return empresa.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 	
-	public Empresa insert (Empresa empresa) {
-		return repo.insert(empresa);
+	public Empresa createOrUpdate (Empresa empresa) {
+		return empresaRepository.save(empresa);
 	}
-		
+				
 	public void delete(String id) {
 		findById(id);
-		repo.deleteById(id);
+		empresaRepository.deleteById(id);
 	}
-	
+		
 	public Empresa update(Empresa empresa) {
 		Empresa newEmpresa = findById(empresa.getId());
 		updateData(newEmpresa, empresa);
-		return repo.save(newEmpresa);
+		return empresaRepository.save(newEmpresa);
 	}
-	
+		
 	public void updateData(Empresa newEmpresa, Empresa empresa) {
-		if(empresa.getNome() != null) {
-			newEmpresa.setNome(empresa.getNome());
-		}
-		if(empresa.getEmail() != null) {
-			newEmpresa.setEmail(empresa.getEmail());
-		}		
+		newEmpresa.setNome(empresa.getNome());
+		newEmpresa.setEmail(empresa.getEmail());
+		newEmpresa.setMatriz(empresa.getMatriz());
+		newEmpresa.setEndereco(empresa.getEndereco());
 	}
-	
-	/*public Empresa fromDTO(EmpresaDTO empresaDto) {
-		return new Empresa(empresaDto.getId(), empresaDto.getNome(), empresaDto.getEmail(), "", empresaDto.getPerfis(), empresaDto.getIsAtivo(), empresaDto.getEndereco(), empresaDto.getEmpresa());
-	}*/
 }

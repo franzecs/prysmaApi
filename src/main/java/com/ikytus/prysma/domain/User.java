@@ -1,8 +1,9 @@
 package com.ikytus.prysma.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +13,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.enums.Perfil;
 import com.ikytus.prysma.domain.models.Endereco;
 import com.ikytus.prysma.dto.EmpresaDTO;
 
@@ -31,9 +32,10 @@ public class User implements Serializable{
 	
 	@NotBlank(message = "Password required")
 	@Size(min = 6)
-	private String password;
+	private String senha;
 	
-	private List<ProfileEnum> profile = new ArrayList<>();
+	private Set<Integer> perfis = new HashSet<>();
+	
     private boolean isAtivo;
     private Endereco endereco;
     private EmpresaDTO empresa;
@@ -43,17 +45,18 @@ public class User implements Serializable{
 	public User() {
 	}
 
-	public User(String id, String nome, String email, String password, Boolean isAtivo, 
+	public User(String id, String nome, String email, String senha, Boolean isAtivo, 
 				Endereco endereco, EmpresaDTO empresa, String url_perfil) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.password = password;
+		this.senha = senha;
 		this.isAtivo = isAtivo;
 		this.endereco = endereco;
 		this.empresa = empresa;
 		this.url_perfil = url_perfil;
+		addPerfil(Perfil.USER);
 	}
 
 
@@ -81,20 +84,20 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getSenha() {
+		return senha;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	
-	public List<ProfileEnum> getProfile() {
-		return profile;
+	public Set<Perfil> getPerfis(){
+		return  perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
-
-	public void setProfile(List<ProfileEnum> profile) {
-		this.profile = profile;
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 
 	public Boolean getIsAtivo() {

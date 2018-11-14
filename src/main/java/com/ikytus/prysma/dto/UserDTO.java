@@ -1,10 +1,12 @@
 package com.ikytus.prysma.dto;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.ikytus.prysma.domain.User;
-import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.enums.Perfil;
 import com.ikytus.prysma.domain.models.Endereco;
 
 public class UserDTO implements Serializable {	
@@ -13,7 +15,7 @@ public class UserDTO implements Serializable {
 	private String id;
 	private String nome;
 	private String email;
-	private List<ProfileEnum> profile;
+	private Set<Integer> perfis = new HashSet<>();
     private Boolean isAtivo;
     private Endereco endereco;
     private EmpresaDTO empresa;
@@ -56,12 +58,12 @@ public class UserDTO implements Serializable {
 		this.email = email;
 	}
 	
-	public List<ProfileEnum> getProfile() {
-		return profile;
+	public Set<Perfil> getPerfis(){
+		return  perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
-
-	public void setProfile(List<ProfileEnum> profile) {
-		this.profile = profile;
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 
 	public Boolean getIsAtivo() {

@@ -1,4 +1,4 @@
-package com.ikytus.prysma.services;
+package com.ikytus.prysma.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.ikytus.prysma.domain.Empresa;
@@ -17,7 +18,7 @@ import com.ikytus.prysma.domain.User;
 import com.ikytus.prysma.dto.UserDTO;
 import com.ikytus.prysma.repository.EmpresaRepository;
 import com.ikytus.prysma.repository.UserRepository;
-import com.ikytus.prysma.security.jwt.JwtTokenUtil;
+import com.ikytus.prysma.services.EmpresaService;
 import com.ikytus.prysma.services.exception.ObjectNotFoundException;
 
 @Service
@@ -33,7 +34,7 @@ public class UserService {
 	private EmpresaService empresaService;	
 	
 	@Autowired
-    protected JwtTokenUtil jwtTokenUtil;
+    protected JWTUtil jwtTokenUtil;
 	
 	public Page<User> findAll(int page, int count) {
 		Pageable pages = PageRequest.of(page, count);
@@ -66,7 +67,8 @@ public class UserService {
 	
 	public User updateStatus(String status, String id) {
 		User newUser = findById(id);
-		if(status == "true") {
+				
+		if(status.equals("true")) {
 			newUser.setIsAtivo(true);
 		}else {
 			newUser.setIsAtivo(false);
@@ -76,15 +78,14 @@ public class UserService {
 	}
 	
 	public void updateData(User newUser, User user) {
-		if(user.getPassword() != null) {
-			newUser.setPassword(user.getPassword());
+		if(user.getSenha() != null) {
+			newUser.setSenha(user.getSenha());
 		}
 		newUser.setNome(user.getNome());
 		newUser.setEmail(user.getEmail());
 		newUser.setEmpresa(user.getEmpresa());
 		newUser.setEndereco(user.getEndereco());
 		newUser.setIsAtivo(user.getIsAtivo());
-		newUser.setProfile(user.getProfile());
 		newUser.setUrl_perfil(user.getUrl_perfil());
 	}
 	
@@ -102,7 +103,16 @@ public class UserService {
 	
 	public User userFromRequest(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        String email = jwtTokenUtil.getUsernameFromToken(token);
+        String email = jwtTokenUtil.getUsername(token);
         return findByEmail(email);
     }
+	
+	public static UserSS authenticated() {
+		try {
+			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
 }

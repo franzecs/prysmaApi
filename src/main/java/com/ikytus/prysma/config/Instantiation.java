@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.ikytus.prysma.domain.Cliente;
 import com.ikytus.prysma.domain.Empresa;
 import com.ikytus.prysma.domain.User;
-import com.ikytus.prysma.domain.enums.ProfileEnum;
+import com.ikytus.prysma.domain.enums.Perfil;
 import com.ikytus.prysma.domain.models.Endereco;
 import com.ikytus.prysma.dto.EmpresaDTO;
 import com.ikytus.prysma.repository.ClienteRepository;
@@ -61,9 +61,10 @@ public class Instantiation implements CommandLineRunner {
 		empresaRepository.saveAll(Arrays.asList(emp3, emp4, emp5));
 		
 		User franze = new User(null, "Francisco José", "franzecs@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp1),"");
-		franze.setProfile(Arrays.asList(ProfileEnum.ADMIN_SISTEMA, ProfileEnum.ADMIN_EMPRESA));
+		franze.addPerfil(Perfil.ADMIN_SISTEMA);
+		franze.addPerfil(Perfil.ADMIN_EMPRESA);
 		User paulo = new User(null, "Paulo José", "paulo@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp2),"");
-		paulo.setProfile(Arrays.asList(ProfileEnum.VENDEDOR));				
+		paulo.addPerfil(Perfil.VENDEDOR);				
 		userRepository.saveAll(Arrays.asList(franze, paulo));
 		
 		Cliente cli1 = new Cliente(null, "cliente 1", "", "", sdf.parse("02/05/1979"), "", "", ender,  new EmpresaDTO(emp1));

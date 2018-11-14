@@ -22,7 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ikytus.prysma.domain.Cliente;
 import com.ikytus.prysma.domain.models.Response;
 import com.ikytus.prysma.services.ClienteService;
-import com.ikytus.prysma.services.UserService;
+import com.ikytus.prysma.security.UserService;
 
 @RestController
 @RequestMapping(value="/clientes")
