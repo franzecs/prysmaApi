@@ -37,11 +37,13 @@ public class Cliente implements Serializable{
 	
 	private EmpresaDTO empresa;
 	
+	private String url_perfil;
+	
 	public Cliente() {
 	}
 	
 	public Cliente(String id, String nome, String cpf, String rg, Date dataNascimento, String telefone,
-			String email, Endereco endereco, EmpresaDTO empresa) {
+			String email, Endereco endereco, EmpresaDTO empresa, String url_perfil) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -52,6 +54,7 @@ public class Cliente implements Serializable{
 		this.email = email;
 		this.endereco = endereco;
 		this.empresa = empresa;
+		this.url_perfil = url_perfil;
 	}
 
 	public String getId() {
@@ -124,6 +127,14 @@ public class Cliente implements Serializable{
 
 	public void setEmpresa(EmpresaDTO empresa) {
 		this.empresa = empresa;
+	}
+	
+	public String getUrl_perfil() {
+		return url_perfil;
+	}
+
+	public void setUrl_perfil(String url_perfil) {
+		this.url_perfil = url_perfil;
 	}
 
 	@Override

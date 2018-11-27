@@ -60,15 +60,15 @@ public class Instantiation implements CommandLineRunner {
 		
 		empresaRepository.saveAll(Arrays.asList(emp3, emp4, emp5));
 		
-		User franze = new User(null, "Francisco José", "franzecs@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp1),"");
+		User franze = new User(null, "Francisco José", "franzecs@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp1),"../../../assets/img/prod.jpg");
 		franze.addPerfil(Perfil.ADMIN_SISTEMA);
 		franze.addPerfil(Perfil.ADMIN_EMPRESA);
-		User paulo = new User(null, "Paulo José", "paulo@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp2),"");
+		User paulo = new User(null, "Paulo José", "paulo@gmail.com",passwordEncoder.encode("123456"),true, ender,new EmpresaDTO(emp2),"../../../assets/img/prod.jpg");
 		paulo.addPerfil(Perfil.VENDEDOR);				
 		userRepository.saveAll(Arrays.asList(franze, paulo));
 		
-		Cliente cli1 = new Cliente(null, "cliente 1", "", "", sdf.parse("02/05/1979"), "", "", ender,  new EmpresaDTO(emp1));
-		Cliente cli2 = new Cliente(null, "cliente 2", "61649864353", "2000010083139", sdf.parse("02/05/1979"), "88951038", "teste@teste.com", ender,  new EmpresaDTO(emp2));
+		Cliente cli1 = new Cliente(null, "cliente 1", "", "", sdf.parse("02/05/1979"), "", "", ender,  new EmpresaDTO(emp1), "");
+		Cliente cli2 = new Cliente(null, "cliente 2", "61649864353", "2000010083139", sdf.parse("02/05/1979"), "88951038", "teste@teste.com", ender,  new EmpresaDTO(emp2), "");
 		
 		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 		

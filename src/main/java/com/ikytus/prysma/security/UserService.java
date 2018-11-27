@@ -77,6 +77,13 @@ public class UserService {
 		return userRepository.save(newUser);
 	}
 	
+	public User updateURLPerfil(String url, String id) {
+		
+		User newUser = findById(id);
+		newUser.setUrl_perfil(url);
+		return userRepository.save(newUser);
+	}
+	
 	public void updateData(User newUser, User user) {
 		if(user.getSenha() != null) {
 			newUser.setSenha(user.getSenha());

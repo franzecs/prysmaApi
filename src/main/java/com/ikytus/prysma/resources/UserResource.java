@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import com.ikytus.prysma.services.EmpresaService;
 
 @RestController
 @RequestMapping(value="/users")
+@CrossOrigin(origins = "*")
 public class UserResource {
 	
 	@Autowired
@@ -113,6 +115,15 @@ public class UserResource {
 			@PathVariable("id") String id){
 		
 		service.updateStatus(status, id);
+		return ResponseEntity.ok(new Response<String>());
+	}
+	
+	@PutMapping("/perfil/{id}")
+	public ResponseEntity<Response<String>> updateUrlPerfil(
+			@PathVariable("id") String id,
+			@RequestBody String url){
+		
+		service.updateURLPerfil(url, id);
 		return ResponseEntity.ok(new Response<String>());
 	}
 			

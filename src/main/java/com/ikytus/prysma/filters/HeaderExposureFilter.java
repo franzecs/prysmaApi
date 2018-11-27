@@ -25,6 +25,7 @@ public class HeaderExposureFilter implements Filter {
 
 		HttpServletResponse res = (HttpServletResponse) response;
 		res.addHeader("access-control-expose-headers", "location");
+		res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
 		chain.doFilter(request, response);
 	}
 

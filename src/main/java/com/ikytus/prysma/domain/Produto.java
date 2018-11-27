@@ -18,11 +18,12 @@ public class Produto implements Serializable{
 	private int estoque;
     private Double valor;
     private EmpresaDTO empresa;
+    private String url_img;
         
     public Produto() {
     }
 	
-	public Produto(String id, String nome, String fabricante, int estoque, Double valor, EmpresaDTO empresa) {
+	public Produto(String id, String nome, String fabricante, int estoque, Double valor, EmpresaDTO empresa, String url_img) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -30,6 +31,7 @@ public class Produto implements Serializable{
 		this.estoque = estoque;
 		this.valor = valor;
 		this.empresa = empresa;
+		this.url_img = url_img;
 	}
 	
 	public String getId() {
@@ -78,6 +80,14 @@ public class Produto implements Serializable{
 
 	public void setEmpresa(EmpresaDTO empresa) {
 		this.empresa = empresa;
+	}
+	
+	public String getUrl_img() {
+		return url_img;
+	}
+
+	public void setUrl_img(String url_img) {
+		this.url_img = url_img;
 	}
 
 	@Override
